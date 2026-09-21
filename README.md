@@ -1,4 +1,4 @@
-# Vidhya Vidhai Study Portal
+# SVG HORIZON
 
 Free competitive exam notes for students of Sivagangai district.
 No login, no app, works on any phone.
