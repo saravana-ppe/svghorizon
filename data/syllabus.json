@@ -1,0 +1,676 @@
+{
+  "site": {
+    "title": "SVG Horizon",
+    "tagline": "Free notes for every student in Sivagangai"
+  },
+  "exams": {
+    "neet": {
+      "name": "NEET",
+      "tamil": "நீட்",
+      "desc": "Medical entrance",
+      "subjects": {
+        "physics": {
+          "name": "Physics",
+          "chapters": {
+            "optics": {
+              "name": "Optics",
+              "topics": {
+                "reflection": {
+                  "name": "Reflection of light at plane and spherical surfaces",
+                  "academic": "notes/neet/physics/reflection.md",
+                  "teacher": [
+                    {
+                      "title": "Ray optics class notes",
+                      "by": "Mrs. R. Kalaiselvi, GHSS Sivagangai",
+                      "date": "12 September 2026",
+                      "file": "teacher-notes/neet/physics/ray-optics-kalaiselvi.pdf"
+                    }
+                  ]
+                },
+                "refraction": {
+                  "name": "Refraction and total internal reflection",
+                  "academic": "notes/neet/physics/refraction.md"
+                },
+                "lenses": {
+                  "name": "Lenses, lens formula and power"
+                },
+                "prism": {
+                  "name": "Prism, dispersion and scattering"
+                },
+                "eye": {
+                  "name": "Human eye and defects of vision"
+                },
+                "waveoptics": {
+                  "name": "Wave optics: interference and diffraction"
+                }
+              }
+            },
+            "laws": {
+              "name": "Laws of Motion",
+              "topics": {
+                "newton": {
+                  "name": "Newton's three laws"
+                },
+                "friction": {
+                  "name": "Friction and its types"
+                },
+                "circular": {
+                  "name": "Dynamics of uniform circular motion"
+                }
+              }
+            },
+            "kinematics": {
+              "name": "Kinematics",
+              "topics": {
+                "straightline": {
+                  "name": "Motion in a straight line"
+                },
+                "projectile": {
+                  "name": "Projectile motion"
+                },
+                "relative": {
+                  "name": "Relative velocity"
+                }
+              }
+            },
+            "thermodynamics": {
+              "name": "Thermodynamics",
+              "topics": {
+                "firstlaw": {
+                  "name": "Zeroth and first law"
+                },
+                "secondlaw": {
+                  "name": "Second law and heat engines"
+                }
+              }
+            },
+            "current": {
+              "name": "Current Electricity",
+              "topics": {
+                "ohm": {
+                  "name": "Ohm's law and resistance"
+                },
+                "kirchhoff": {
+                  "name": "Kirchhoff's laws and Wheatstone bridge"
+                }
+              }
+            },
+            "atoms": {
+              "name": "Atoms and Nuclei",
+              "topics": {
+                "bohr": {
+                  "name": "Bohr model of the atom"
+                },
+                "radioactivity": {
+                  "name": "Radioactivity and decay"
+                }
+              }
+            }
+          }
+        },
+        "chemistry": {
+          "name": "Chemistry",
+          "chapters": {
+            "atomstructure": {
+              "name": "Structure of Atom",
+              "topics": {
+                "quantum": {
+                  "name": "Quantum numbers and orbitals"
+                },
+                "configuration": {
+                  "name": "Electronic configuration"
+                }
+              }
+            },
+            "bonding": {
+              "name": "Chemical Bonding",
+              "topics": {
+                "ionic": {
+                  "name": "Ionic and covalent bonds"
+                },
+                "vsepr": {
+                  "name": "VSEPR theory and molecular shapes"
+                },
+                "hybridisation": {
+                  "name": "Hybridisation"
+                }
+              }
+            },
+            "equilibrium": {
+              "name": "Equilibrium",
+              "topics": {
+                "chemicaleq": {
+                  "name": "Chemical equilibrium and Le Chatelier"
+                },
+                "ioniceq": {
+                  "name": "Ionic equilibrium, pH and buffers"
+                }
+              }
+            },
+            "organicbasics": {
+              "name": "Basic Principles of Organic Chemistry",
+              "topics": {
+                "iupac": {
+                  "name": "IUPAC nomenclature"
+                },
+                "isomerism": {
+                  "name": "Isomerism"
+                },
+                "mechanism": {
+                  "name": "Reaction mechanisms and intermediates"
+                }
+              }
+            },
+            "biomolecules": {
+              "name": "Biomolecules",
+              "topics": {
+                "carbohydrates": {
+                  "name": "Carbohydrates"
+                },
+                "proteins": {
+                  "name": "Proteins and enzymes"
+                }
+              }
+            }
+          }
+        },
+        "biology": {
+          "name": "Biology",
+          "chapters": {
+            "cell": {
+              "name": "Cell: Structure and Function",
+              "topics": {
+                "organelles": {
+                  "name": "Cell organelles",
+                  "academic": "notes/neet/biology/cell-organelles.md"
+                },
+                "celldivision": {
+                  "name": "Cell cycle and cell division"
+                }
+              }
+            },
+            "genetics": {
+              "name": "Genetics and Evolution",
+              "topics": {
+                "mendel": {
+                  "name": "Mendel's laws of inheritance"
+                },
+                "dna": {
+                  "name": "DNA replication and protein synthesis"
+                },
+                "evolution": {
+                  "name": "Theories of evolution"
+                }
+              }
+            },
+            "humanphysiology": {
+              "name": "Human Physiology",
+              "topics": {
+                "digestion": {
+                  "name": "Digestion and absorption"
+                },
+                "breathing": {
+                  "name": "Breathing and exchange of gases"
+                },
+                "circulation": {
+                  "name": "Body fluids and circulation"
+                },
+                "neural": {
+                  "name": "Neural control and coordination"
+                }
+              }
+            },
+            "plantphysiology": {
+              "name": "Plant Physiology",
+              "topics": {
+                "photosynthesis": {
+                  "name": "Photosynthesis in higher plants"
+                },
+                "respiration": {
+                  "name": "Respiration in plants"
+                }
+              }
+            },
+            "ecology": {
+              "name": "Ecology and Environment",
+              "topics": {
+                "ecosystem": {
+                  "name": "Ecosystem and energy flow"
+                },
+                "biodiversity": {
+                  "name": "Biodiversity and conservation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "jee": {
+      "name": "JEE",
+      "tamil": "ஜேஇஇ",
+      "desc": "Engineering entrance",
+      "subjects": {
+        "physics": {
+          "name": "Physics",
+          "chapters": {
+            "mechanics": {
+              "name": "Mechanics",
+              "topics": {
+                "rotation": {
+                  "name": "Rotational motion and moment of inertia"
+                },
+                "gravitation": {
+                  "name": "Gravitation"
+                },
+                "shm": {
+                  "name": "Simple harmonic motion"
+                }
+              }
+            },
+            "electrostatics": {
+              "name": "Electrostatics and Magnetism",
+              "topics": {
+                "coulomb": {
+                  "name": "Coulomb's law and electric field"
+                },
+                "capacitors": {
+                  "name": "Capacitors"
+                },
+                "magneticeffects": {
+                  "name": "Magnetic effects of current"
+                }
+              }
+            },
+            "modern": {
+              "name": "Modern Physics",
+              "topics": {
+                "photoelectric": {
+                  "name": "Photoelectric effect"
+                },
+                "semiconductors": {
+                  "name": "Semiconductors and logic gates"
+                }
+              }
+            }
+          }
+        },
+        "chemistry": {
+          "name": "Chemistry",
+          "chapters": {
+            "physical": {
+              "name": "Physical Chemistry",
+              "topics": {
+                "mole": {
+                  "name": "Mole concept and stoichiometry"
+                },
+                "thermochem": {
+                  "name": "Thermodynamics and thermochemistry"
+                },
+                "kinetics": {
+                  "name": "Chemical kinetics"
+                }
+              }
+            },
+            "inorganic": {
+              "name": "Inorganic Chemistry",
+              "topics": {
+                "periodic": {
+                  "name": "Periodic table and periodicity"
+                },
+                "coordination": {
+                  "name": "Coordination compounds"
+                }
+              }
+            },
+            "organic": {
+              "name": "Organic Chemistry",
+              "topics": {
+                "hydrocarbons": {
+                  "name": "Hydrocarbons"
+                },
+                "aldehydes": {
+                  "name": "Aldehydes, ketones and carboxylic acids"
+                }
+              }
+            }
+          }
+        },
+        "maths": {
+          "name": "Mathematics",
+          "chapters": {
+            "calculus": {
+              "name": "Calculus",
+              "topics": {
+                "limits": {
+                  "name": "Limits, continuity and differentiability",
+                  "academic": "notes/jee/maths/limits.md"
+                },
+                "integrals": {
+                  "name": "Definite and indefinite integrals"
+                },
+                "differential": {
+                  "name": "Differential equations"
+                }
+              }
+            },
+            "algebra": {
+              "name": "Algebra",
+              "topics": {
+                "complex": {
+                  "name": "Complex numbers"
+                },
+                "matrices": {
+                  "name": "Matrices and determinants"
+                },
+                "binomial": {
+                  "name": "Binomial theorem"
+                }
+              }
+            },
+            "coordinate": {
+              "name": "Coordinate Geometry",
+              "topics": {
+                "straightlines": {
+                  "name": "Straight lines"
+                },
+                "conics": {
+                  "name": "Circles and conic sections"
+                }
+              }
+            },
+            "vectors": {
+              "name": "Vectors and 3D Geometry",
+              "topics": {
+                "vectoralgebra": {
+                  "name": "Vector algebra"
+                },
+                "threed": {
+                  "name": "Three dimensional geometry"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "clat": {
+      "name": "CLAT",
+      "tamil": "க்ளாட்",
+      "desc": "Law entrance",
+      "subjects": {
+        "legal": {
+          "name": "Legal Reasoning",
+          "chapters": {
+            "principles": {
+              "name": "Legal Principles and Facts",
+              "topics": {
+                "applying": {
+                  "name": "Applying a principle to a fact situation"
+                },
+                "torts": {
+                  "name": "Law of torts: basic ideas"
+                },
+                "contract": {
+                  "name": "Law of contract: offer and acceptance"
+                },
+                "criminal": {
+                  "name": "Criminal law: basic offences"
+                }
+              }
+            },
+            "constitution": {
+              "name": "Constitution and Rights",
+              "topics": {
+                "fundamentalrights": {
+                  "name": "Fundamental rights"
+                },
+                "dpsp": {
+                  "name": "Directive principles"
+                }
+              }
+            }
+          }
+        },
+        "english": {
+          "name": "English Language",
+          "chapters": {
+            "comprehension": {
+              "name": "Reading Comprehension",
+              "topics": {
+                "inference": {
+                  "name": "Drawing inferences from a passage"
+                },
+                "tone": {
+                  "name": "Identifying tone and argument"
+                }
+              }
+            },
+            "vocabulary": {
+              "name": "Vocabulary and Grammar",
+              "topics": {
+                "context": {
+                  "name": "Meaning from context"
+                },
+                "idioms": {
+                  "name": "Idioms and phrases"
+                }
+              }
+            }
+          }
+        },
+        "gk": {
+          "name": "Current Affairs and GK",
+          "chapters": {
+            "national": {
+              "name": "National Affairs",
+              "topics": {
+                "schemes": {
+                  "name": "Government schemes and policies"
+                },
+                "judgments": {
+                  "name": "Landmark judgments in the news"
+                }
+              }
+            },
+            "international": {
+              "name": "International Affairs",
+              "topics": {
+                "organisations": {
+                  "name": "International organisations"
+                },
+                "summits": {
+                  "name": "Recent summits and treaties"
+                }
+              }
+            }
+          }
+        },
+        "logical": {
+          "name": "Logical Reasoning",
+          "chapters": {
+            "arguments": {
+              "name": "Arguments and Assumptions",
+              "topics": {
+                "assumptions": {
+                  "name": "Identifying assumptions"
+                },
+                "strengthen": {
+                  "name": "Strengthening and weakening an argument"
+                }
+              }
+            }
+          }
+        },
+        "quant": {
+          "name": "Quantitative Techniques",
+          "chapters": {
+            "datainterpretation": {
+              "name": "Data Interpretation",
+              "topics": {
+                "ratio": {
+                  "name": "Ratio, proportion and percentage"
+                },
+                "graphs": {
+                  "name": "Reading tables and graphs"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "nda": {
+      "name": "NDA",
+      "tamil": "என்.டி.ஏ",
+      "desc": "Defence academy",
+      "subjects": {
+        "maths": {
+          "name": "Mathematics",
+          "chapters": {
+            "algebra": {
+              "name": "Algebra",
+              "topics": {
+                "sets": {
+                  "name": "Sets, relations and functions"
+                },
+                "quadratic": {
+                  "name": "Quadratic equations"
+                }
+              }
+            },
+            "trigonometry": {
+              "name": "Trigonometry",
+              "topics": {
+                "ratios": {
+                  "name": "Trigonometric ratios and identities"
+                },
+                "heights": {
+                  "name": "Heights and distances"
+                }
+              }
+            }
+          }
+        },
+        "gat": {
+          "name": "General Ability Test",
+          "chapters": {
+            "english": {
+              "name": "English",
+              "topics": {
+                "grammar": {
+                  "name": "Grammar and usage"
+                },
+                "vocabulary": {
+                  "name": "Vocabulary"
+                }
+              }
+            },
+            "gk": {
+              "name": "General Knowledge",
+              "topics": {
+                "physicsgat": {
+                  "name": "Physics for GAT"
+                },
+                "history": {
+                  "name": "History and freedom movement"
+                },
+                "geography": {
+                  "name": "Geography of India"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tnpsc": {
+      "name": "TNPSC Group 4",
+      "tamil": "டி.என்.பி.எஸ்.சி",
+      "desc": "State government jobs",
+      "subjects": {
+        "gs": {
+          "name": "General Studies",
+          "chapters": {
+            "science": {
+              "name": "General Science",
+              "topics": {
+                "physicsbasics": {
+                  "name": "Physics: basic concepts"
+                },
+                "biology": {
+                  "name": "Biology and human body"
+                }
+              }
+            },
+            "tnhistory": {
+              "name": "Tamil Nadu History and Culture",
+              "topics": {
+                "sangam": {
+                  "name": "Sangam age"
+                },
+                "reform": {
+                  "name": "Social reform movements in Tamil Nadu"
+                }
+              }
+            },
+            "polity": {
+              "name": "Indian Polity",
+              "topics": {
+                "constitution": {
+                  "name": "Constitution of India"
+                },
+                "localgovt": {
+                  "name": "Local self government"
+                }
+              }
+            }
+          }
+        },
+        "aptitude": {
+          "name": "Aptitude and Mental Ability",
+          "chapters": {
+            "numbers": {
+              "name": "Simplification and Numbers",
+              "topics": {
+                "hcflcm": {
+                  "name": "HCF and LCM"
+                },
+                "percentage": {
+                  "name": "Percentage and averages"
+                }
+              }
+            },
+            "reasoning": {
+              "name": "Logical Reasoning",
+              "topics": {
+                "series": {
+                  "name": "Number and letter series"
+                },
+                "direction": {
+                  "name": "Direction sense and blood relations"
+                }
+              }
+            }
+          }
+        },
+        "tamil": {
+          "name": "Tamil",
+          "chapters": {
+            "grammar": {
+              "name": "இலக்கணம்",
+              "topics": {
+                "punarchi": {
+                  "name": "புணர்ச்சி விதிகள்"
+                },
+                "sollvagai": {
+                  "name": "சொல் வகைகள்"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

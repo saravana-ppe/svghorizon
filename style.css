@@ -1,0 +1,130 @@
+/* ============================================================
+   Vidhya Vidhai Study Portal — styles
+   You rarely need to touch this file. Colours are at the top.
+   ============================================================ */
+
+:root{
+  --paper:#FBFBF6;
+  --surface:#FFFFFF;
+  --ink:#16211D;
+  --ink-soft:#56635E;
+  --rule:#DFE3DC;
+  --green:#0F5E3C;
+  --green-soft:#E4F0E7;
+  --amber:#9A5B08;
+  --amber-soft:#FBEFD9;
+  --focus:#0F5E3C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101512; --surface:#171D1A; --ink:#E8EDE9; --ink-soft:#9AA7A1;
+    --rule:#2A332E; --green:#6FC79A; --green-soft:#17301F;
+    --amber:#E3B06A; --amber-soft:#2C2416; --focus:#6FC79A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101512; --surface:#171D1A; --ink:#E8EDE9; --ink-soft:#9AA7A1;
+  --rule:#2A332E; --green:#6FC79A; --green-soft:#17301F;
+  --amber:#E3B06A; --amber-soft:#2C2416; --focus:#6FC79A;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Familjen Grotesk","Segoe UI",system-ui,sans-serif;
+  font-size:17px; line-height:1.5; -webkit-text-size-adjust:100%;
+}
+img{max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:3px}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 72px}
+.loading{color:var(--ink-soft);padding:40px 0}
+
+/* top bar */
+header.bar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:720px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:12px}
+.mark{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0}
+.mark-dot{width:26px;height:26px;border-radius:7px;background:var(--green);display:grid;place-items:center;color:var(--paper);font-weight:700;font-size:13px;flex:none}
+.mark-txt{font-weight:600;letter-spacing:-.01em;font-size:15px;text-align:left}
+.bar-spacer{flex:1}
+.theme-btn{background:none;border:1px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:13px;color:var(--ink-soft)}
+
+/* breadcrumb */
+.crumb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13.5px;color:var(--ink-soft);padding:16px 0 4px}
+.crumb button{background:none;border:0;padding:0;color:var(--green);font-weight:500}
+.crumb span.sep{opacity:.5}
+
+/* home */
+.hero{padding:30px 0 22px}
+.hero h1{font-size:clamp(28px,7.5vw,40px);line-height:1.1;letter-spacing:-.025em;margin:0 0 10px;font-weight:600}
+.hero p{margin:0;color:var(--ink-soft);font-size:16px;max-width:46ch}
+.search{position:relative;margin:22px 0 8px}
+.search input{width:100%;padding:14px 16px;font:inherit;font-size:16px;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:12px}
+.search input::placeholder{color:var(--ink-soft)}
+.results{margin-top:8px;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--surface)}
+.results button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);padding:12px 15px}
+.results button:last-child{border-bottom:0}
+.results .rt{font-weight:500}
+.results .rp{font-size:13px;color:var(--ink-soft)}
+
+.sec-head{font-size:13.5px;color:var(--ink-soft);margin:26px 0 12px;font-weight:500}
+.exams{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+@media (max-width:400px){.exams{grid-template-columns:1fr}}
+.exam{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:16px 15px 15px;text-align:left;display:flex;flex-direction:column;gap:3px;min-height:106px}
+.exam .ta{font-size:21px;color:var(--green);line-height:1.2}
+.exam .en{font-weight:600;font-size:18px;letter-spacing:-.01em}
+.exam .sub{font-size:13px;color:var(--ink-soft);margin-top:auto}
+
+/* lists */
+.page-h{margin:14px 0 4px;font-size:clamp(24px,6vw,31px);font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.page-sub{color:var(--ink-soft);font-size:15px;margin:0 0 18px}
+.list{border-top:1px solid var(--rule)}
+.row{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);padding:15px 2px}
+.row .num{font-size:13px;color:var(--ink-soft);min-width:22px;font-variant-numeric:tabular-nums}
+.row .body{flex:1;min-width:0}
+.row .t{font-weight:500;letter-spacing:-.01em}
+.row .m{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.row .chev{color:var(--ink-soft);flex:none}
+.pill{display:inline-block;font-size:11.5px;padding:2px 7px;border-radius:999px;background:var(--green-soft);color:var(--green);margin-left:7px;vertical-align:1.5px}
+
+/* the two buttons on a topic */
+.gate{display:grid;gap:12px;margin:20px 0 8px}
+.gate button{text-align:left;border-radius:16px;padding:18px 17px;border:1px solid var(--rule);background:var(--surface);display:flex;gap:14px;align-items:flex-start}
+.gate .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:19px;flex:none}
+.gate .academic .ic{background:var(--green-soft)}
+.gate .teacher .ic{background:var(--amber-soft)}
+.gate .gt{font-weight:600;font-size:17px;letter-spacing:-.01em}
+.gate .gd{font-size:13.5px;color:var(--ink-soft);margin-top:3px}
+.gate .tag{font-size:12px;margin-top:7px;display:inline-block}
+.gate .academic .tag{color:var(--green)}
+.gate .teacher .tag{color:var(--amber)}
+
+/* the note reader — this styles your markdown automatically */
+.note{font-family:"Newsreader",Georgia,serif;font-size:18.5px;line-height:1.62;margin-top:6px}
+.note h1{font-family:"Familjen Grotesk",sans-serif;font-size:24px;margin:0 0 12px;letter-spacing:-.02em}
+.note h2{font-family:"Familjen Grotesk",sans-serif;font-size:20px;line-height:1.25;margin:30px 0 8px;letter-spacing:-.015em}
+.note h3{font-family:"Familjen Grotesk",sans-serif;font-size:16px;margin:22px 0 6px;color:var(--ink-soft);font-weight:600}
+.note p{margin:0 0 14px}
+.note ul,.note ol{margin:0 0 14px;padding-left:22px}
+.note li{margin-bottom:7px}
+.note strong{font-weight:600}
+.note blockquote{border-left:3px solid var(--green);margin:0 0 16px;padding:2px 0 2px 14px;color:var(--ink-soft);font-size:16.5px}
+.note code{background:var(--green-soft);color:var(--green);padding:2px 7px;border-radius:6px;font-family:"Familjen Grotesk",sans-serif;font-size:16px}
+.note table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:16px}
+.note th,.note td{border:1px solid var(--rule);padding:8px 10px;text-align:left}
+.note th{background:var(--green-soft);font-family:"Familjen Grotesk",sans-serif;font-size:14px}
+.note hr{border:0;border-top:1px solid var(--rule);margin:26px 0}
+.note img{border-radius:10px;margin-bottom:14px}
+
+/* pdf viewer and empty states */
+.doc{border:1px solid var(--rule);border-radius:14px;background:var(--surface);padding:16px;display:flex;gap:13px;align-items:center;margin-bottom:12px}
+.doc .dic{width:38px;height:38px;border-radius:9px;background:var(--amber-soft);display:grid;place-items:center;font-size:17px;flex:none}
+.doc .dt{font-weight:500;font-size:15.5px}
+.doc .dm{font-size:13px;color:var(--ink-soft);margin-top:2px}
+.pdfbox{width:100%;height:78vh;min-height:420px;border:1px solid var(--rule);border-radius:14px;background:var(--surface);margin-bottom:12px}
+.dl{display:inline-block;background:var(--green);color:var(--paper);text-decoration:none;border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:500;margin-bottom:12px}
+.empty{border:1px dashed var(--rule);border-radius:14px;padding:26px 20px;text-align:center;color:var(--ink-soft);font-size:15px}
+.empty strong{display:block;color:var(--ink);font-weight:600;font-size:16.5px;margin-bottom:5px}
+.back{margin-top:26px;background:none;border:1px solid var(--rule);border-radius:999px;padding:9px 16px;font-size:14.5px;color:var(--ink-soft)}
+footer{border-top:1px solid var(--rule);margin-top:40px;padding-top:16px;font-size:13px;color:var(--ink-soft)}

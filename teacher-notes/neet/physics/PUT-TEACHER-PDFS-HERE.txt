@@ -1,0 +1,19 @@
+Put teacher PDFs and scanned notes in this folder.
+
+Use simple file names with no spaces, for example:
+   ray-optics-kalaiselvi.pdf
+   reflection-numericals-murugan.pdf
+
+After copying the file here, add it in data/syllabus.json under the
+matching topic, like this:
+
+  "teacher": [
+    {
+      "title": "Ray optics class notes",
+      "by": "Mrs. R. Kalaiselvi, GHSS Sivagangai",
+      "date": "12 September 2026",
+      "file": "teacher-notes/neet/physics/ray-optics-kalaiselvi.pdf"
+    }
+  ]
+
+Then: git add .  /  git commit -m "Added teacher notes"  /  git push
