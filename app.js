@@ -1,5 +1,5 @@
 /* ============================================================
-   Vidhya Vidhai Study Portal — app logic
+   SVG Horizon — app logic
 
    You should not need to edit this file to add content.
    To add a note:  put the file in notes/ or teacher-notes/,
@@ -7,6 +7,7 @@
    ============================================================ */
 
 let DATA = null;
+let SITE = {};
 let state = { view: "home" };
 const app = document.getElementById("app");
 
@@ -17,7 +18,7 @@ const chev = `<svg class="chev" width="8" height="13" viewBox="0 0 8 13" fill="n
 /* ---------- start up ---------- */
 fetch("data/syllabus.json")
   .then(r => r.json())
-  .then(json => { DATA = json.exams; render(); })
+  .then(json => { DATA = json.exams; SITE = json.site || {}; route(); })
   .catch(() => {
     app.innerHTML = `<div class="empty"><strong>Could not load the syllabus</strong>
       If you opened index.html by double-clicking it, that is the reason. The browser blocks
@@ -25,8 +26,105 @@ fetch("data/syllabus.json")
       address instead.</div>`;
   });
 
-function go(view, p = {}) { state = { view, ...p }; window.scrollTo(0, 0); render(); }
+/* ---------- addresses: the part after # in the address bar ----------
+   Every screen has its own address, for example
+     #/neet                                   NEET (list of subjects)
+     #/neet/biology                           Biology (list of units)
+     #/neet/biology/unit-05                   one unit (list of topics)
+     #/neet/biology/unit-05/ecosystem         one topic (the two buttons)
+     #/neet/biology/unit-05/ecosystem/notes   academic notes
+     #/neet/biology/unit-05/ecosystem/teacher teacher notes
+   The words are the IDs from data/syllabus.json. A click changes the
+   address, and the address decides what is shown. That is what makes
+   Back, refresh and shared links work.
+   RULE: once links are shared, do not rename IDs in syllabus.json. */
+
+const LEVELS = ["exam", "subject", "chapter", "topic"];
+const ENDING = { academic: "notes", teacher: "teacher" };
+const scrollMemory = {};        // where the page was scrolled, per address
+let clicked = false;            // true when a click (not Back) caused the change
+let wantScroll = 0;             // scroll position to show once the page is drawn
+history.scrollRestoration = "manual";
+
+// build the address for a screen
+function addressFor(view, p) {
+  const parts = LEVELS.filter(k => p[k]).map(k => encodeURIComponent(p[k]));
+  if (ENDING[view]) parts.push(ENDING[view]);
+  return "#/" + parts.join("/");
+}
+
+// every click in the site calls go(); it only changes the address
+function go(view, p = {}) {
+  const next = addressFor(view, p);
+  clicked = true;
+  if (location.hash === next) route();   // already here: just redraw
+  else location.hash = next;             // new address: browser records it, then route() runs
+}
 window.go = go;
+
+// read the address, check it against the syllabus, and show that screen
+function route() {
+  if (!DATA) return;
+  const has = (obj, key) => !!obj && Object.prototype.hasOwnProperty.call(obj, key);
+  const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean).map(decodeURIComponent);
+  const s = { view: "home" };
+
+  if (parts.length) {
+    const [exam, subject, chapter, topic, ending] = parts;
+    if (!has(DATA, exam)) return notFound();
+    Object.assign(s, { view: "exam", exam });
+    if (subject !== undefined) {
+      if (!has(DATA[exam].subjects, subject)) return notFound();
+      Object.assign(s, { view: "subject", subject });
+    }
+    if (chapter !== undefined) {
+      if (!has(DATA[exam].subjects[subject].chapters, chapter)) return notFound();
+      Object.assign(s, { view: "chapter", chapter });
+    }
+    if (topic !== undefined) {
+      if (!has(DATA[exam].subjects[subject].chapters[chapter].topics, topic)) return notFound();
+      Object.assign(s, { view: "topic", topic });
+    }
+    if (ending !== undefined) {
+      const view = Object.keys(ENDING).find(v => ENDING[v] === ending);
+      if (!view || parts.length > 5) return notFound();
+      s.view = view;
+    }
+  }
+
+  state = s;
+  const key = location.hash || "#/";
+  wantScroll = clicked ? 0 : (scrollMemory[key] || 0);   // Back/Forward returns to where you were
+  clicked = false;
+  render();
+  setTitle();
+  window.scrollTo(0, wantScroll);
+}
+
+// a shared link that no longer matches anything in the syllabus
+function notFound() {
+  clicked = false;
+  document.title = "Page not found · " + (SITE.title || "SVG Horizon");
+  app.innerHTML = `<div class="empty" style="margin-top:32px"><strong>This link does not open any page</strong>
+    The chapter or topic may have been renamed or removed. Start from the home page to find it.</div>
+    <button class="back" onclick="go('home')">Go to the home page</button>`;
+  window.scrollTo(0, 0);
+}
+
+// the name shown on the browser tab
+function setTitle() {
+  const s = state, site = SITE.title || "SVG Horizon";
+  if (s.view === "home") { document.title = site; return; }
+  const ex = DATA[s.exam], sub = s.subject && ex.subjects[s.subject];
+  const ch = s.chapter && sub.chapters[s.chapter], tp = s.topic && ch.topics[s.topic];
+  document.title = (tp || ch || sub || ex).name + " · " + site;
+}
+
+// remember the scroll position of the page being left
+window.addEventListener("hashchange", e => {
+  scrollMemory[new URL(e.oldURL).hash || "#/"] = window.scrollY;
+  route();
+});
 
 function crumbs(parts) {
   return `<nav class="crumb">` + parts.map((p, i) =>
@@ -228,12 +326,62 @@ function showFile(path, head, backBtn) {
   app.innerHTML = head + `<p class="loading">Opening the notes…</p>` + backBtn;
   fetch(path)
     .then(r => { if (!r.ok) throw new Error(); return r.text(); })
-    .then(md => { app.innerHTML = head + `<article class="note">${marked.parse(md)}</article>` + backBtn; })
+    .then(md => {
+      app.innerHTML = head + `<article class="note">${marked.parse(md)}</article>` + backBtn;
+      prepareNote(app.querySelector(".note"));
+      window.scrollTo(0, wantScroll);    // notes load a moment later, so scroll again
+    })
     .catch(() => {
       app.innerHTML = head + `<div class="empty"><strong>That file could not be opened</strong>
         Check that the path in syllabus.json matches the real file name exactly, including capital letters.</div>` + backBtn;
     });
 }
+
+/* ---------- inside a note: contents list and jump links ----------
+   Each heading gets a label (id) made from its text, for example
+   "## 3. Blood Groups" gets "3-blood-groups". Notes with three or more
+   main sections get a "Contents" list at the top that jumps to them.
+   Wide tables get their own sideways scroll so phones show them fully. */
+function slug(text) {
+  return text.toLowerCase().trim().replace(/[^\p{L}\p{N}\s-]/gu, "").replace(/\s/g, "-");
+}
+
+function prepareNote(note) {
+  const used = {};
+  const heads = [...note.querySelectorAll("h2, h3, h4")];
+  heads.forEach(h => {
+    let id = slug(h.textContent) || "section";
+    if (used[id]) id += "-" + used[id]++; else used[id] = 1;
+    h.id = id;
+  });
+
+  const main = heads.filter(h => h.tagName === "H2");
+  if (main.length >= 3) {
+    const box = document.createElement("details");
+    box.className = "toc";
+    box.innerHTML = `<summary>Contents (${main.length} sections)</summary><ul>` +
+      main.map(h => `<li><a href="#${h.id}">${esc(h.textContent)}</a></li>`).join("") + `</ul>`;
+    note.prepend(box);
+  }
+
+  note.querySelectorAll("table").forEach(t => {
+    const holder = document.createElement("div");
+    holder.className = "table-scroll";
+    t.replaceWith(holder);
+    holder.appendChild(t);
+  });
+}
+
+// links like "#3-blood-groups" scroll within the note instead of changing the page
+app.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || a.getAttribute("href").startsWith("#/")) return;   // "#/..." are page addresses
+  e.preventDefault();
+  const target = document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+  if (!target) return;
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  target.scrollIntoView({ behavior: calm ? "auto" : "smooth", block: "start" });
+});
 
 /* ---------- theme ---------- */
 const tb = document.getElementById("themeBtn");
