@@ -10,10 +10,52 @@ let DATA = null;
 let SITE = {};
 let state = { view: "home" };
 const app = document.getElementById("app");
+const trail = document.getElementById("trail");
 
 const count = o => Object.keys(o || {}).length;
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const chev = `<svg class="chev" width="8" height="13" viewBox="0 0 8 13" fill="none" aria-hidden="true"><path d="M1.5 1.5L6.5 6.5L1.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+
+/* ---------- exam colours ----------
+   Each exam card gets a colour by its field. To give a new exam a colour,
+   add its ID here (medical, engineering, law or defence). */
+const FIELD = {
+  neet: { key: "medical",     label: "Medical" },
+  jee:  { key: "engineering", label: "Engineering" },
+  clat: { key: "law",         label: "Law" },
+  nda:  { key: "defence",     label: "Defence" }
+};
+
+/* ---------- subject icons (simple line drawings) ----------
+   Matched by subject ID in syllabus.json; anything else gets a book. */
+const ICON_PATHS = {
+  physics:   `<circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><ellipse cx="12" cy="12" rx="9.5" ry="3.8"/><ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(120 12 12)"/>`,
+  chemistry: `<path d="M9 3h6M10 3v6.2L4.6 18.4A1.8 1.8 0 0 0 6.2 21h11.6a1.8 1.8 0 0 0 1.6-2.6L14 9.2V3"/><path d="M7.2 15h9.6"/>`,
+  biology:   `<path d="M5 19C5 10.5 10.5 4.6 20 4c-.6 9.5-6.5 15-15 15z"/><path d="M5 19l8.5-8.5"/>`,
+  maths:     `<path d="M18 5H6.5l6 7-6 7H18"/>`,
+  legal:     `<path d="M12 3v17M7.5 20.5h9M5 6.5h14"/><path d="M5 6.5L2.3 12.5a2.9 2.9 0 0 0 5.4 0zM19 6.5l-2.7 6a2.9 2.9 0 0 0 5.4 0z"/>`,
+  english:   `<path d="M3.5 18L8 6l4.5 12M5.2 13.5h5.6"/><path d="M20.5 18v-5.2a2.6 2.6 0 0 0-5 0M20.5 15.2c-1.8-.6-5.4-.4-5.4 1.4 0 1.9 3.4 2 5.4.2"/>`,
+  gk:        `<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.2 3.2 3.2 14.8 0 18M12 3c-3.2 3.2-3.2 14.8 0 18"/>`,
+  logical:   `<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>`,
+  quant:     `<rect x="5" y="3" width="14" height="18" rx="2.2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>`,
+  gat:       `<circle cx="12" cy="12" r="9"/><path d="M15.6 8.4l-2.1 5.1-5.1 2.1 2.1-5.1z"/>`,
+  book:      `<path d="M4 19.5V5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h14"/>`
+};
+const icon = id => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[id] || ICON_PATHS.book}</svg>`;
+
+// how many topics, and how many have notes ready, under any level
+function tally(obj) {
+  let topics = 0, ready = 0;
+  const walk = o => {
+    if (o.topics) Object.values(o.topics).forEach(t => { topics++; if (t.academic) ready++; });
+    if (o.chapters) Object.values(o.chapters).forEach(walk);
+    if (o.subjects) Object.values(o.subjects).forEach(walk);
+  };
+  walk(obj);
+  return { topics, ready };
+}
+const meter = (ready, total) => `<div class="meter" role="img" aria-label="${ready} of ${total} notes ready">
+  <span style="width:${total ? Math.round(ready / total * 100) : 0}%"></span></div>`;
 
 /* ---------- start up ---------- */
 fetch("data/syllabus.json")
@@ -97,6 +139,7 @@ function route() {
   wantScroll = clicked ? 0 : (scrollMemory[key] || 0);   // Back/Forward returns to where you were
   clicked = false;
   render();
+  drawTrail();
   setTitle();
   window.scrollTo(0, wantScroll);
 }
@@ -104,8 +147,10 @@ function route() {
 // a shared link that no longer matches anything in the syllabus
 function notFound() {
   clicked = false;
+  state = { view: "missing" };
+  drawTrail();
   document.title = "Page not found · " + (SITE.title || "SVG Horizon");
-  app.innerHTML = `<div class="empty" style="margin-top:32px"><strong>This link does not open any page</strong>
+  app.innerHTML = `<div class="empty" style="margin-top:36px"><strong>This link does not open any page</strong>
     The chapter or topic may have been renamed or removed. Start from the home page to find it.</div>
     <button class="back" onclick="go('home')">Go to the home page</button>`;
   window.scrollTo(0, 0);
@@ -126,12 +171,32 @@ window.addEventListener("hashchange", e => {
   route();
 });
 
-function crumbs(parts) {
-  return `<nav class="crumb">` + parts.map((p, i) =>
-    i === parts.length - 1
-      ? `<span>${esc(p.label)}</span>`
-      : `<button onclick='${p.action}'>${esc(p.label)}</button><span class="sep">/</span>`
-  ).join("") + `</nav>`;
+/* ---------- the "you are here" trail under the header ----------
+   Home / NEET / Biology / Human Physiology / Body Fluids... / Notes
+   Every part except the last one can be clicked to go back to it. */
+function drawTrail() {
+  const s = state;
+  if (s.view === "home" || s.view === "missing") { trail.innerHTML = ""; trail.hidden = true; return; }
+  const ex = DATA[s.exam], sub = s.subject && ex.subjects[s.subject];
+  const ch = s.chapter && sub.chapters[s.chapter], tp = s.topic && ch.topics[s.topic];
+  const p = { exam: s.exam, subject: s.subject, chapter: s.chapter, topic: s.topic };
+  const steps = [{ label: "Home", view: "home", p: {} }, { label: ex.name, view: "exam", p: { exam: p.exam } }];
+  if (sub) steps.push({ label: sub.name, view: "subject", p: { exam: p.exam, subject: p.subject } });
+  if (ch)  steps.push({ label: ch.name,  view: "chapter", p: { exam: p.exam, subject: p.subject, chapter: p.chapter } });
+  if (tp)  steps.push({ label: tp.name,  view: "topic",   p });
+  if (s.view === "academic") steps.push({ label: "Academic notes" });
+  if (s.view === "teacher")  steps.push({ label: "Teacher notes" });
+
+  trail.hidden = false;
+  trail.innerHTML = `<div class="trail-in">` + steps.map((st, i) => {
+    const last = i === steps.length - 1;
+    // the address goes in href, so a long-press on a phone can copy the link
+    return last
+      ? `<span class="here" aria-current="page">${esc(st.label)}</span>`
+      : `<a href="${addressFor(st.view, st.p)}">${esc(st.label)}</a><span class="sep" aria-hidden="true">/</span>`;
+  }).join("") + `</div>`;
+  const inner = trail.firstElementChild;
+  inner.scrollLeft = inner.scrollWidth;       // on small phones, show the end of a long trail
 }
 
 function render() {
@@ -150,26 +215,37 @@ function render() {
   if (s.view === "teacher") return renderTeacher(ex, sub, ch, tp);
 }
 
+// the title block at the top of every inner page
+const pageHead = (title, sub, kicker = "") => `<header class="page-head">
+  ${kicker ? `<p class="kicker">${kicker}</p>` : ""}
+  <h1>${esc(title)}</h1>${sub ? `<p>${sub}</p>` : ""}</header>`;
+
 /* ---------- home ---------- */
 function renderHome() {
+  const ready = Object.values(DATA).reduce((n, e) => n + tally(e).ready, 0);
   app.innerHTML = `
   <section class="hero">
     <h1>Every chapter, every subject, in one place.</h1>
-    <p>Notes written to the exam syllabus, plus the notes your own teachers have shared. Free, and no sign-in needed.</p>
-  </section>
-  <div class="search">
-    <input id="q" type="search" placeholder="Search a topic, e.g. reflection" autocomplete="off" aria-label="Search topics">
+    <p>${esc(SITE.tagline || "Free notes for every student")}. Notes written to the exam syllabus, plus notes shared by your own teachers. No sign-in needed.</p>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search a chapter, e.g. photosynthesis" autocomplete="off" aria-label="Search chapters and topics">
+    </div>
     <div id="res"></div>
-  </div>
-  <div class="sec-head">Choose your exam</div>
+  </section>
+  <h2 class="sec-head">Choose your exam <span>${ready} notes ready to read</span></h2>
   <div class="exams">` +
   Object.entries(DATA).map(([id, e]) => {
-    let tops = 0;
-    Object.values(e.subjects).forEach(s => Object.values(s.chapters).forEach(c => tops += count(c.topics)));
-    return `<button class="exam" onclick="go('exam',{exam:'${id}'})">
-      <span class="ta">${esc(e.tamil || "")}</span>
-      <span class="en">${esc(e.name)}</span>
-      <span class="sub">${esc(e.desc)} · ${count(e.subjects)} subjects · ${tops} topics</span>
+    const f = FIELD[id] || { key: "other", label: "" };
+    const t = tally(e);
+    return `<button class="exam f-${f.key}" onclick="go('exam',{exam:'${id}'})">
+      <span class="badge">${esc(e.name.slice(0, 2).toUpperCase())}</span>
+      <span class="ex-text">
+        <span class="ta" lang="ta">${esc(e.tamil || "")}</span>
+        <span class="en">${esc(e.name)}</span>
+        <span class="desc">${esc(e.desc)}</span>
+      </span>
+      <span class="ex-foot"><span>${count(e.subjects)} subjects · ${t.topics} topics</span>${f.label ? `<span class="field">${f.label}</span>` : ""}</span>
     </button>`;
   }).join("") + `</div>`;
 
@@ -187,57 +263,52 @@ function renderHome() {
     res.innerHTML = hits.length
       ? `<div class="results">` + hits.map(h =>
           `<button onclick="go('topic',{exam:'${h.ei}',subject:'${h.si}',chapter:'${h.ci}',topic:'${h.ti}'})">
-            <div class="rt">${esc(h.t.name)}</div><div class="rp">${esc(h.path)}</div></button>`).join("") + `</div>`
-      : `<div class="results"><button style="cursor:default"><div class="rt">Nothing found</div>
-         <div class="rp">Try a shorter word, like "motion" or "cell"</div></button></div>`;
+            <span class="rt">${esc(h.t.name)}</span><span class="rp">${esc(h.path)}</span></button>`).join("") + `</div>`
+      : `<div class="results"><div class="none"><span class="rt">Nothing found</span>
+         <span class="rp">Try a shorter word, like "cell" or "motion"</span></div></div>`;
   });
 }
 
-/* ---------- exam ---------- */
+/* ---------- exam: subject cards ---------- */
 function renderExam(ex) {
-  app.innerHTML = crumbs([{ label: "Home", action: "go('home')" }, { label: ex.name }]) +
-  `<h1 class="page-h">${esc(ex.name)}</h1>
-   <p class="page-sub">${esc(ex.desc)} · pick a subject to see its chapters</p>
-   <div class="list">` +
+  const f = FIELD[state.exam] || { key: "other" };
+  app.innerHTML = pageHead(ex.name, `${esc(ex.desc)}. Pick a subject to see its chapters.`, `<span lang="ta">${esc(ex.tamil || "")}</span>`) +
+  `<div class="subjects f-${f.key}">` +
    Object.entries(ex.subjects).map(([id, s]) => {
-     let t = 0; Object.values(s.chapters).forEach(c => t += count(c.topics));
-     return `<button class="row" onclick="go('subject',{exam:'${state.exam}',subject:'${id}'})">
-       <div class="body"><div class="t">${esc(s.name)}</div>
-       <div class="m">${count(s.chapters)} chapters · ${t} topics</div></div>${chev}</button>`;
+     const t = tally(s);
+     return `<button class="subject" onclick="go('subject',{exam:'${state.exam}',subject:'${id}'})">
+       <span class="tile">${icon(id)}</span>
+       <span class="s-name">${esc(s.name)}</span>
+       <span class="s-meta">${count(s.chapters)} chapters · ${t.topics} topics</span>
+       ${meter(t.ready, t.topics)}
+       <span class="s-ready">${t.ready ? `${t.ready} of ${t.topics} notes ready` : "Notes being written"}</span>
+     </button>`;
    }).join("") + `</div>
    <button class="back" onclick="go('home')">All exams</button>`;
 }
 
-/* ---------- subject ---------- */
+/* ---------- subject: chapters in syllabus order ---------- */
 function renderSubject(ex, sub) {
-  app.innerHTML = crumbs([
-    { label: "Home", action: "go('home')" },
-    { label: ex.name, action: `go('exam',{exam:'${state.exam}'})` },
-    { label: sub.name }]) +
-  `<h1 class="page-h">${esc(sub.name)}</h1>
-   <p class="page-sub">Chapters follow the ${esc(ex.name)} syllabus order</p>
-   <div class="list">` +
-   Object.entries(sub.chapters).map(([id, c], i) =>
-     `<button class="row" onclick="go('chapter',{exam:'${state.exam}',subject:'${state.subject}',chapter:'${id}'})">
-       <div class="num">${i + 1}</div>
-       <div class="body"><div class="t">${esc(c.name)}</div><div class="m">${count(c.topics)} topics</div></div>${chev}</button>`
-   ).join("") + `</div>
+  app.innerHTML = pageHead(sub.name, `Chapters follow the ${esc(ex.name)} syllabus order.`) +
+  `<div class="list">` +
+   Object.entries(sub.chapters).map(([id, c], i) => {
+     const t = tally(c);
+     return `<button class="row" onclick="go('chapter',{exam:'${state.exam}',subject:'${state.subject}',chapter:'${id}'})">
+       <span class="num">${i + 1}</span>
+       <span class="body"><span class="t">${esc(c.name)}</span>
+       <span class="m">${t.topics} topics${t.ready ? ` · <b>${t.ready === t.topics ? "all notes ready" : t.ready + " notes ready"}</b>` : ""}</span></span>${chev}</button>`;
+   }).join("") + `</div>
    <button class="back" onclick="go('exam',{exam:'${state.exam}'})">Back to ${esc(ex.name)}</button>`;
 }
 
-/* ---------- chapter ---------- */
+/* ---------- chapter: its topics ---------- */
 function renderChapter(ex, sub, ch) {
-  app.innerHTML = crumbs([
-    { label: "Home", action: "go('home')" },
-    { label: ex.name, action: `go('exam',{exam:'${state.exam}'})` },
-    { label: sub.name, action: `go('subject',{exam:'${state.exam}',subject:'${state.subject}'})` },
-    { label: ch.name }]) +
-  `<h1 class="page-h">${esc(ch.name)}</h1>
-   <p class="page-sub">Choose a topic to open its notes</p>
-   <div class="list">` +
+  app.innerHTML = pageHead(ch.name, "Choose a topic to open its notes.") +
+  `<div class="list">` +
    Object.entries(ch.topics).map(([id, t]) =>
      `<button class="row" onclick="go('topic',{exam:'${state.exam}',subject:'${state.subject}',chapter:'${state.chapter}',topic:'${id}'})">
-       <div class="body"><div class="t">${esc(t.name)}${t.academic ? `<span class="pill">notes ready</span>` : ""}</div></div>${chev}</button>`
+       <span class="body"><span class="t">${esc(t.name)}</span></span>
+       ${t.academic ? `<span class="pill">Notes ready</span>` : `<span class="pill soon">Being written</span>`}${chev}</button>`
    ).join("") + `</div>
    <button class="back" onclick="go('subject',{exam:'${state.exam}',subject:'${state.subject}'})">Back to ${esc(sub.name)}</button>`;
 }
@@ -246,23 +317,17 @@ function renderChapter(ex, sub, ch) {
 function renderTopic(ex, sub, ch, tp) {
   const teachers = tp.teacher || [];
   const base = `{exam:'${state.exam}',subject:'${state.subject}',chapter:'${state.chapter}',topic:'${state.topic}'}`;
-  app.innerHTML = crumbs([
-    { label: ex.name, action: `go('exam',{exam:'${state.exam}'})` },
-    { label: sub.name, action: `go('subject',{exam:'${state.exam}',subject:'${state.subject}'})` },
-    { label: ch.name, action: `go('chapter',{exam:'${state.exam}',subject:'${state.subject}',chapter:'${state.chapter}'})` },
-    { label: tp.name }]) +
-  `<h1 class="page-h">${esc(tp.name)}</h1>
-   <p class="page-sub">Two ways to study this topic</p>
-   <div class="gate">
+  app.innerHTML = pageHead(tp.name, "Two ways to study this topic.") +
+  `<div class="gate">
      <button class="academic" onclick="go('academic',${base})">
-       <span class="ic">&#128218;</span>
-       <span><span class="gt">Academic notes</span>
+       <span class="ic">${icon("book")}</span>
+       <span class="g-body"><span class="gt">Academic notes</span>
        <span class="gd">The full explanation written to the ${esc(ex.name)} syllabus, with previous year questions.</span>
        <span class="tag">${tp.academic ? "Ready to read" : "Being written"}</span></span>
      </button>
      <button class="teacher" onclick="go('teacher',${base})">
-       <span class="ic">&#9997;</span>
-       <span><span class="gt">Teacher notes</span>
+       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></span>
+       <span class="g-body"><span class="gt">Teacher notes</span>
        <span class="gd">Notes and worked problems shared by government school teachers of Sivagangai.</span>
        <span class="tag">${teachers.length ? teachers.length + " shared" : "None shared yet"}</span></span>
      </button>
@@ -273,12 +338,7 @@ function renderTopic(ex, sub, ch, tp) {
 /* ---------- academic notes: markdown or pdf ---------- */
 function renderAcademic(ex, sub, ch, tp) {
   const base = `{exam:'${state.exam}',subject:'${state.subject}',chapter:'${state.chapter}',topic:'${state.topic}'}`;
-  const head = crumbs([
-    { label: ch.name, action: `go('chapter',{exam:'${state.exam}',subject:'${state.subject}',chapter:'${state.chapter}'})` },
-    { label: tp.name, action: `go('topic',${base})` },
-    { label: "Academic notes" }]) +
-    `<h1 class="page-h">${esc(tp.name)}</h1>
-     <p class="page-sub">Academic notes · ${esc(ex.name)} syllabus</p>`;
+  const head = pageHead(tp.name, `Academic notes for the ${esc(ex.name)} syllabus.`);
   const backBtn = `<button class="back" onclick="go('topic',${base})">Back to the topic</button>`;
 
   if (!tp.academic) {
@@ -293,12 +353,7 @@ function renderAcademic(ex, sub, ch, tp) {
 function renderTeacher(ex, sub, ch, tp) {
   const list = tp.teacher || [];
   const base = `{exam:'${state.exam}',subject:'${state.subject}',chapter:'${state.chapter}',topic:'${state.topic}'}`;
-  const head = crumbs([
-    { label: ch.name, action: `go('chapter',{exam:'${state.exam}',subject:'${state.subject}',chapter:'${state.chapter}'})` },
-    { label: tp.name, action: `go('topic',${base})` },
-    { label: "Teacher notes" }]) +
-    `<h1 class="page-h">${esc(tp.name)}</h1>
-     <p class="page-sub">Teacher notes · shared by teachers in the district</p>`;
+  const head = pageHead(tp.name, "Teacher notes, shared by teachers in the district.");
   const backBtn = `<button class="back" onclick="go('topic',${base})">Back to the topic</button>`;
 
   if (!list.length) {
@@ -306,7 +361,7 @@ function renderTeacher(ex, sub, ch, tp) {
       When a teacher sends a PDF or a scanned notebook page for this topic, it appears here for every student.</div>` + backBtn;
     return;
   }
-  const cards = list.map(d => `<div class="doc"><span class="dic">&#128196;</span>
+  const cards = list.map(d => `<div class="doc"><span class="dic">${icon("book")}</span>
      <span><span class="dt">${esc(d.title)}</span>
      <span class="dm">${esc(d.by || "")}${d.date ? " · " + esc(d.date) : ""}</span></span></div>`).join("");
   showFile(list[0].file, head + cards, backBtn);
@@ -316,8 +371,8 @@ function renderTeacher(ex, sub, ch, tp) {
 function showFile(path, head, backBtn) {
   if (path.toLowerCase().endsWith(".pdf")) {
     app.innerHTML = head +
-      `<a class="dl" href="${path}" download>Download this PDF</a>
-       <object class="pdfbox" data="${path}" type="application/pdf">
+      `<a class="dl" href="${esc(path)}" download>Download this PDF</a>
+       <object class="pdfbox" data="${esc(path)}" type="application/pdf">
          <div class="empty"><strong>Your phone cannot show PDFs inside the page</strong>
          Use the download button above to open it.</div>
        </object>` + backBtn;
@@ -359,7 +414,7 @@ function prepareNote(note) {
   if (main.length >= 3) {
     const box = document.createElement("details");
     box.className = "toc";
-    box.innerHTML = `<summary>Contents (${main.length} sections)</summary><ul>` +
+    box.innerHTML = `<summary>Contents <span>${main.length} sections</span></summary><ul>` +
       main.map(h => `<li><a href="#${h.id}">${esc(h.textContent)}</a></li>`).join("") + `</ul>`;
     note.prepend(box);
   }
@@ -384,10 +439,13 @@ app.addEventListener("click", e => {
 });
 
 /* ---------- theme ---------- */
+// the button always names the theme you would switch TO
 const tb = document.getElementById("themeBtn");
+const isDark = () => document.documentElement.getAttribute("data-theme") === "dark"
+  || (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+tb.textContent = isDark() ? "Light" : "Dark";
 tb.onclick = () => {
-  const dark = document.documentElement.getAttribute("data-theme") === "dark"
-    || (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+  const dark = isDark();
   document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
   tb.textContent = dark ? "Dark" : "Light";
 };

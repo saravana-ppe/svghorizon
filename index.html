@@ -5,22 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SVG Horizon</title>
 <meta name="description" content="Free competitive exam notes for students of Sivagangai district.">
+<meta name="theme-color" content="#13203A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Tamil:wdth,wght@100..125,400..800&family=Hind+Madurai:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="bar">
   <div class="bar-in">
-    <button class="mark" onclick="go('home')" aria-label="Home">
-      <span class="mark-dot">S</span>
-      <span class="mark-txt">SVG Horizon</span>
+    <span class="bar-side"></span>
+    <button class="brand" onclick="go('home')" aria-label="SVG Horizon, go to the home page">
+      <svg class="brand-mark" viewBox="0 0 44 30" aria-hidden="true">
+        <path class="sun" d="M9 23a13 13 0 0 1 26 0z"/>
+        <path class="rays" d="M22 3.5v3.5M9.5 8.6l2.5 2.5M34.5 8.6L32 11.1M4 15.5h3.4M40 15.5h-3.4"/>
+        <path class="line" d="M2 26.5h40"/>
+      </svg>
+      <span class="brand-name">SVG Horizon</span>
     </button>
-    <span class="bar-spacer"></span>
-    <button class="theme-btn" id="themeBtn">Dark</button>
+    <span class="bar-side end"><button class="theme-btn" id="themeBtn">Dark</button></span>
   </div>
+  <nav class="trail" id="trail" aria-label="You are here"></nav>
 </header>
 
 <div class="wrap">
