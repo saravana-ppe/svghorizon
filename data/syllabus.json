@@ -177,68 +177,221 @@
         "biology": {
           "name": "Biology",
           "chapters": {
-            "cell": {
-              "name": "Cell: Structure and Function",
+            "unit-01": {
+              "name": "Diversity in Living World",
               "topics": {
-                "organelles": {
-                  "name": "Cell organelles",
-                  "academic": "notes/neet/biology/cell-organelles.md"
+                "the-living-world": {
+                  "name": "The Living World",
+                  "academic": "notes/neet/biology/unit-01/the-living-world.md"
                 },
-                "celldivision": {
-                  "name": "Cell cycle and cell division"
+                "biological-classification": {
+                  "name": "Biological Classification",
+                  "academic": "notes/neet/biology/unit-01/biological-classification.md"
+                },
+                "plant-kingdom": {
+                  "name": "Plant Kingdom",
+                  "academic": "notes/neet/biology/unit-01/plant-kingdom.md"
+                },
+                "animal-kingdom": {
+                  "name": "Animal Kingdom",
+                  "academic": "notes/neet/biology/unit-01/animal-kingdom.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-01/revision-and-practice.md"
                 }
               }
             },
-            "genetics": {
-              "name": "Genetics and Evolution",
+            "unit-02": {
+              "name": "Structural Organisation in Animals and Plants",
               "topics": {
-                "mendel": {
-                  "name": "Mendel's laws of inheritance"
+                "morphology-of-flowering-plants": {
+                  "name": "Morphology of Flowering Plants",
+                  "academic": "notes/neet/biology/unit-02/morphology-of-flowering-plants.md"
                 },
-                "dna": {
-                  "name": "DNA replication and protein synthesis"
+                "anatomy-of-flowering-plants": {
+                  "name": "Anatomy of Flowering Plants",
+                  "academic": "notes/neet/biology/unit-02/anatomy-of-flowering-plants.md"
                 },
-                "evolution": {
-                  "name": "Theories of evolution"
+                "structural-organisation-in-animals": {
+                  "name": "Structural Organisation in Animals",
+                  "academic": "notes/neet/biology/unit-02/structural-organisation-in-animals.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-02/revision-and-practice.md"
                 }
               }
             },
-            "humanphysiology": {
-              "name": "Human Physiology",
+            "unit-03": {
+              "name": "Cell Structure and Function",
               "topics": {
-                "digestion": {
-                  "name": "Digestion and absorption"
+                "cell-the-unit-of-life": {
+                  "name": "Cell: The Unit of Life",
+                  "academic": "notes/neet/biology/unit-03/cell-the-unit-of-life.md"
                 },
-                "breathing": {
-                  "name": "Breathing and exchange of gases"
+                "biomolecules": {
+                  "name": "Biomolecules",
+                  "academic": "notes/neet/biology/unit-03/biomolecules.md"
                 },
-                "circulation": {
-                  "name": "Body fluids and circulation"
+                "cell-cycle-and-cell-division": {
+                  "name": "Cell Cycle and Cell Division",
+                  "academic": "notes/neet/biology/unit-03/cell-cycle-and-cell-division.md"
                 },
-                "neural": {
-                  "name": "Neural control and coordination"
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-03/revision-and-practice.md"
                 }
               }
             },
-            "plantphysiology": {
+            "unit-04": {
               "name": "Plant Physiology",
               "topics": {
-                "photosynthesis": {
-                  "name": "Photosynthesis in higher plants"
+                "photosynthesis-in-higher-plants": {
+                  "name": "Photosynthesis in Higher Plants",
+                  "academic": "notes/neet/biology/unit-04/photosynthesis-in-higher-plants.md"
                 },
-                "respiration": {
-                  "name": "Respiration in plants"
+                "respiration-in-plants": {
+                  "name": "Respiration in Plants",
+                  "academic": "notes/neet/biology/unit-04/respiration-in-plants.md"
+                },
+                "plant-growth-and-development": {
+                  "name": "Plant Growth and Development",
+                  "academic": "notes/neet/biology/unit-04/plant-growth-and-development.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-04/revision-and-practice.md"
                 }
               }
             },
-            "ecology": {
+            "unit-05": {
+              "name": "Human Physiology",
+              "topics": {
+                "breathing-and-exchange-of-gases": {
+                  "name": "Breathing and Exchange of Gases",
+                  "academic": "notes/neet/biology/unit-05/breathing-and-exchange-of-gases.md"
+                },
+                "body-fluids-and-circulation": {
+                  "name": "Body Fluids and Circulation",
+                  "academic": "notes/neet/biology/unit-05/body-fluids-and-circulation.md"
+                },
+                "excretory-products-and-their-elimination": {
+                  "name": "Excretory Products and their Elimination",
+                  "academic": "notes/neet/biology/unit-05/excretory-products-and-their-elimination.md"
+                },
+                "locomotion-and-movement": {
+                  "name": "Locomotion and Movement",
+                  "academic": "notes/neet/biology/unit-05/locomotion-and-movement.md"
+                },
+                "neural-control-and-coordination": {
+                  "name": "Neural Control and Coordination",
+                  "academic": "notes/neet/biology/unit-05/neural-control-and-coordination.md"
+                },
+                "chemical-coordination-and-integration": {
+                  "name": "Chemical Coordination and Integration",
+                  "academic": "notes/neet/biology/unit-05/chemical-coordination-and-integration.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-05/revision-and-practice.md"
+                }
+              }
+            },
+            "unit-06": {
+              "name": "Reproduction",
+              "topics": {
+                "sexual-reproduction-in-flowering-plants": {
+                  "name": "Sexual Reproduction in Flowering Plants",
+                  "academic": "notes/neet/biology/unit-06/sexual-reproduction-in-flowering-plants.md"
+                },
+                "human-reproduction": {
+                  "name": "Human Reproduction",
+                  "academic": "notes/neet/biology/unit-06/human-reproduction.md"
+                },
+                "reproductive-health": {
+                  "name": "Reproductive Health",
+                  "academic": "notes/neet/biology/unit-06/reproductive-health.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-06/revision-and-practice.md"
+                }
+              }
+            },
+            "unit-07": {
+              "name": "Genetics and Evolution",
+              "topics": {
+                "principles-of-inheritance-and-variation": {
+                  "name": "Principles of Inheritance and Variation",
+                  "academic": "notes/neet/biology/unit-07/principles-of-inheritance-and-variation.md"
+                },
+                "molecular-basis-of-inheritance": {
+                  "name": "Molecular Basis of Inheritance",
+                  "academic": "notes/neet/biology/unit-07/molecular-basis-of-inheritance.md"
+                },
+                "evolution": {
+                  "name": "Evolution",
+                  "academic": "notes/neet/biology/unit-07/evolution.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-07/revision-and-practice.md"
+                }
+              }
+            },
+            "unit-08": {
+              "name": "Biology and Human Welfare",
+              "topics": {
+                "human-health-and-disease": {
+                  "name": "Human Health and Disease",
+                  "academic": "notes/neet/biology/unit-08/human-health-and-disease.md"
+                },
+                "microbes-in-human-welfare": {
+                  "name": "Microbes in Human Welfare",
+                  "academic": "notes/neet/biology/unit-08/microbes-in-human-welfare.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-08/revision-and-practice.md"
+                }
+              }
+            },
+            "unit-09": {
+              "name": "Biotechnology and Its Applications",
+              "topics": {
+                "biotechnology-principles-and-processes": {
+                  "name": "Biotechnology: Principles and Processes",
+                  "academic": "notes/neet/biology/unit-09/biotechnology-principles-and-processes.md"
+                },
+                "biotechnology-and-its-applications": {
+                  "name": "Biotechnology and Its Applications",
+                  "academic": "notes/neet/biology/unit-09/biotechnology-and-its-applications.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-09/revision-and-practice.md"
+                }
+              }
+            },
+            "unit-10": {
               "name": "Ecology and Environment",
               "topics": {
-                "ecosystem": {
-                  "name": "Ecosystem and energy flow"
+                "organisms-and-populations": {
+                  "name": "Organisms and Populations",
+                  "academic": "notes/neet/biology/unit-10/organisms-and-populations.md"
                 },
-                "biodiversity": {
-                  "name": "Biodiversity and conservation"
+                "ecosystem": {
+                  "name": "Ecosystem",
+                  "academic": "notes/neet/biology/unit-10/ecosystem.md"
+                },
+                "biodiversity-and-conservation": {
+                  "name": "Biodiversity and Conservation",
+                  "academic": "notes/neet/biology/unit-10/biodiversity-and-conservation.md"
+                },
+                "revision-and-practice": {
+                  "name": "Revision and practice MCQs",
+                  "academic": "notes/neet/biology/unit-10/revision-and-practice.md"
                 }
               }
             }
